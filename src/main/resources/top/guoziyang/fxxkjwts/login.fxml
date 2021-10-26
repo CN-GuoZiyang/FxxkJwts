@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="429.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.guoziyang.fxxkjwts.controllers.LoginController">
+   <children>
+      <TextField fx:id="username" layoutX="92.0" layoutY="128.0" prefHeight="45.0" prefWidth="225.0" promptText="学号" />
+      <TextField fx:id="password" layoutX="92.0" layoutY="200.0" prefHeight="45.0" prefWidth="225.0" promptText="密码" />
+      <TextField layoutX="92.0" layoutY="272.0" prefHeight="45.0" prefWidth="157.0" promptText="验证码" />
+      <ImageView fitHeight="45.0" fitWidth="68.0" layoutX="249.0" layoutY="272.0" opacity="0.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="92.0" layoutY="352.0" mnemonicParsing="false" onAction="#login" prefHeight="45.0" prefWidth="225.0" stylesheets="@css/styling.css" text="登录" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Pane prefHeight="89.0" prefWidth="409.0" style="-fx-background-color: #52438F;">
+         <children>
+            <Label layoutX="115.0" layoutY="25.0" text="统一身份认证" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="175.0" layoutY="324.0" textFill="RED" />
+   </children>
+</AnchorPane>
