@@ -2,8 +2,10 @@ module top.guoziyang.fxxkjwts {
     requires javafx.controls;
     requires javafx.fxml;
 
-    requires org.kordamp.bootstrapfx.core;
     requires javafx.graphics;
+
+    requires okhttp3;
+    requires kotlin.stdlib.common;
 
     opens top.guoziyang.fxxkjwts to javafx.fxml;
     exports top.guoziyang.fxxkjwts;

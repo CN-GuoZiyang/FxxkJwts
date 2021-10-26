@@ -6,12 +6,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 import top.guoziyang.fxxkjwts.MainApplication;
+import top.guoziyang.fxxkjwts.common.OkHttpUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class LoginController {
@@ -53,6 +62,44 @@ public class LoginController {
         });
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void initialize() {
+        // 登录页面初始化
+        Request r = new Request.Builder()
+                .url("http://jwts.hit.edu.cn/")
+                .get()
+                .build();
+        Call call = OkHttpUtil.getInstance().newCall(r);
+        String rawCookies = null;
+        try {
+            Response response = call.execute();
+            Map<String, List<String>> m = response.headers().toMultimap();
+            rawCookies = m.get("Set-Cookie").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] cookies = rawCookies.substring(1, rawCookies.length()-1).split(";|,");
+        List<String> cookiesList = new ArrayList<>();
+        for(String cookie : cookies) {
+            if(cookie.contains("name") || cookie.contains("JSESSIONID") || cookie.contains("clwz_blc_pst")) {
+                cookiesList.add(cookie.trim());
+            }
+        }
+        String finalCookie = String.join("; ", cookiesList);
+        r = new Request.Builder()
+                .url("http://jwts.hit.edu.cn/captchaImage")
+                .header("Cookie", finalCookie)
+                .get()
+                .build();
+        call = OkHttpUtil.getInstance().newCall(r);
+        try {
+            Response response = call.execute();
+            captchaImage.setImage(new Image(response.body().byteStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
