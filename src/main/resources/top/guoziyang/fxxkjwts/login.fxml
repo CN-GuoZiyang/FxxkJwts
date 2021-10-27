@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="429.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.guoziyang.fxxkjwts.controllers.LoginController">
+<AnchorPane fx:id="ap" prefHeight="429.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.guoziyang.fxxkjwts.controllers.LoginController">
    <children>
-      <TextField fx:id="username" layoutX="92.0" layoutY="128.0" prefHeight="45.0" prefWidth="225.0" promptText="学号" />
-      <TextField fx:id="password" layoutX="92.0" layoutY="200.0" prefHeight="45.0" prefWidth="225.0" promptText="密码" />
-      <TextField fx:id="captcha" layoutX="92.0" layoutY="272.0" prefHeight="45.0" prefWidth="139.0" promptText="验证码" />
-      <ImageView fx:id="captchaImage" fitHeight="28.0" fitWidth="93.0" layoutX="232.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../Desktop/download.jpg" />
-         </image></ImageView>
+      <TextField fx:id="username" layoutX="92.0" layoutY="128.0" onMouseClicked="#clearErrorMsg" prefHeight="45.0" prefWidth="225.0" promptText="学号" />
+      <PasswordField fx:id="password" layoutX="92.0" layoutY="200.0" onMouseClicked="#clearErrorMsg" prefHeight="45.0" prefWidth="225.0" promptText="密码" />
+      <TextField fx:id="captcha" layoutX="92.0" layoutY="272.0" onMouseClicked="#clearErrorMsg" prefHeight="45.0" prefWidth="225.0" promptText="验证码" />
       <Button layoutX="92.0" layoutY="352.0" mnemonicParsing="false" onAction="#login" prefHeight="45.0" prefWidth="225.0" stylesheets="@css/styling.css" text="登录" textFill="WHITE">
          <font>
             <Font size="20.0" />
@@ -28,8 +22,14 @@
                   <Font size="30.0" />
                </font>
             </Label>
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="375.0" layoutY="15.0" onMouseClicked="#closeProgram" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/close.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-      <Label layoutX="175.0" layoutY="324.0" textFill="RED" />
+      <Label fx:id="errorMsg" layoutX="92.0" layoutY="324.0" prefHeight="20.0" prefWidth="225.0" textAlignment="CENTER" textFill="RED" />
+      <ImageView fx:id="captchaImage" fitHeight="28.0" fitWidth="93.0" layoutX="224.0" layoutY="281.0" onMouseClicked="#refreshCaptcha" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

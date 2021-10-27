@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration status="WARN">
+
+    <Properties> <!-- 配置日志文件输出目录，此配置将日志输出到工程目录下的log4j2_logs文件夹 -->
+        <Property name="LOG_HOME">
+            log4j2_logs
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <!--这个输出控制台的配置，即System.out -->
+        <Console name="console_out_appender" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) . -->
+            <ThresholdFilter level="INFO" onMatch="ACCEPT"
+                             onMismatch="DENY" />
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="[%t] %-5p %c %x - %m%n" />
+        </Console>
+        <!-- 这个输出控制台的配置，这里输出error级别的信息到System.err，在eclipse控制台上看到的是红色文字 -->
+        <Console name="console_err_appender" target="SYSTEM_ERR">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT"
+                             onMismatch="DENY" />
+            <PatternLayout pattern="[%t] %-5p %c %x - %m%n" />
+        </Console>
+    </Appenders>
+
+    <loggers>
+        <root level="trace">
+            <appender-ref ref="console_out_appender" />
+            <appender-ref ref="console_err_appender" />
+        </root>
+    </loggers>
+</configuration>

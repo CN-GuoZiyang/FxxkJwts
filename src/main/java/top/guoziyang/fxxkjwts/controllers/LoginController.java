@@ -5,48 +5,81 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import okhttp3.Call;
-import okhttp3.Request;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.guoziyang.fxxkjwts.MainApplication;
 import top.guoziyang.fxxkjwts.common.OkHttpUtil;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginController {
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+    public static Stage stage;
 
     private double x, y = 0;
 
     @FXML
-    private TextField password;
+    private PasswordField password;
     @FXML
     private TextField captcha;
     @FXML
     private ImageView captchaImage;
     @FXML
     private TextField username;
+    @FXML
+    private Label errorMsg;
+    @FXML
+    private AnchorPane ap;
 
     @FXML
-    void login(ActionEvent event) {
-        username.getScene().getWindow().hide();
+    public void login(ActionEvent event) {
+        Map<String, String> loginData = new HashMap<>();
+        loginData.put("usercode", username.getText());
+        loginData.put("password", password.getText());
+        loginData.put("code", captcha.getText());
+        Response response = OkHttpUtil.postWithCookie("http://jwts.hit.edu.cn/loginLdap", loginData);
         try {
-            showMain(new Stage());
+            if(response == null || response.code() != 200) {
+                errorMsg.setText("网络错误，请重试");
+            }
+            String responseStr = response.body().string();
+            String pattern = "您好！([\\u4e00-\\u9fa5]{2,})同学";
+            Pattern p = Pattern.compile(pattern);
+            Matcher m = p.matcher(responseStr);
+            if(m.find()) {
+                logger.info("Login as " + m.group(1));
+                stage.hide();
+                try {
+                    showMain(new Stage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                errorMsg.setText("用户名或密码错误");
+                refreshCaptcha();
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            response.close();
         }
     }
 
     private void showMain(Stage stage) throws IOException {
+        MainController.stage = stage;
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainApplication.class.getResource("main.fxml")));
         Scene scene = new Scene(root);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -66,39 +99,30 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        // 登录页面初始化
-        Request r = new Request.Builder()
-                .url("http://jwts.hit.edu.cn/")
-                .get()
-                .build();
-        Call call = OkHttpUtil.getInstance().newCall(r);
-        String rawCookies = null;
-        try {
-            Response response = call.execute();
-            Map<String, List<String>> m = response.headers().toMultimap();
-            rawCookies = m.get("Set-Cookie").toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+        refreshCaptcha();
+    }
+
+    @FXML
+    public void refreshCaptcha() {
+        Response captchaRes = OkHttpUtil.getWithCookie("http://jwts.hit.edu.cn/captchaImage");
+        if(captchaRes == null || captchaRes.code() != 200) {
+            logger.error("refresh captcha error");
+            errorMsg.setText("刷新验证码失败");
         }
-        String[] cookies = rawCookies.substring(1, rawCookies.length()-1).split(";|,");
-        List<String> cookiesList = new ArrayList<>();
-        for(String cookie : cookies) {
-            if(cookie.contains("name") || cookie.contains("JSESSIONID") || cookie.contains("clwz_blc_pst")) {
-                cookiesList.add(cookie.trim());
-            }
-        }
-        String finalCookie = String.join("; ", cookiesList);
-        r = new Request.Builder()
-                .url("http://jwts.hit.edu.cn/captchaImage")
-                .header("Cookie", finalCookie)
-                .get()
-                .build();
-        call = OkHttpUtil.getInstance().newCall(r);
-        try {
-            Response response = call.execute();
-            captchaImage.setImage(new Image(response.body().byteStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        captchaImage.setImage(new Image(captchaRes.body().byteStream()));
+        captchaRes.close();
+    }
+
+    @FXML
+    public void clearErrorMsg() {
+        errorMsg.setText("");
+    }
+
+    @FXML
+    public void closeProgram() {
+        stage.close();
+        if(MainController.stage != null) {
+            MainController.stage.close();
         }
     }
 

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import top.guoziyang.fxxkjwts.controllers.LoginController;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -17,6 +18,7 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        LoginController.stage = stage;
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainApplication.class.getResource("login.fxml")));
         Scene scene = new Scene(root);
         stage.initStyle(StageStyle.UNDECORATED);
