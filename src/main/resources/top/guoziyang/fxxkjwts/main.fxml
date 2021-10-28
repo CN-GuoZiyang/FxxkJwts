@@ -135,7 +135,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css" fx:id="xnxqChoice">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -145,7 +145,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                              <ChoiceBox fx:id="kkxqChoice" prefWidth="150.0" stylesheets="@css/styling.css">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -155,7 +155,7 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                              <ChoiceBox fx:id="kkyxChoice" prefWidth="150.0" stylesheets="@css/styling.css">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
