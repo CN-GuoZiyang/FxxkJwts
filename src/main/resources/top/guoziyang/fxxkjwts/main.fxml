@@ -7,13 +7,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="626.0" prefWidth="1144.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.guoziyang.fxxkjwts.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="1244.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="top.guoziyang.fxxkjwts.controllers.MainController">
    <children>
-      <BorderPane prefHeight="626.0" prefWidth="1144.0">
+      <BorderPane prefHeight="661.0" prefWidth="1244.0">
          <left>
             <VBox prefHeight="564.0" prefWidth="209.0" style="-fx-background-color: #6F5CC2;" BorderPane.alignment="CENTER">
                <children>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="个人信息" textFill="WHITE">
+                  <Button fx:id="infoButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#tabChange" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="个人信息" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -25,7 +25,7 @@
                         <Insets left="30.0" />
                      </padding>
                   </Button>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="选课系统" textFill="WHITE">
+                  <Button fx:id="fuckButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#tabChange" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="选课系统" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -37,7 +37,7 @@
                         <Insets left="30.0" />
                      </padding>
                   </Button>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="课程查看" textFill="WHITE">
+                  <Button fx:id="courseButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#tabChange" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="课程查看" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -49,7 +49,7 @@
                         <Insets left="30.0" />
                      </padding>
                   </Button>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="评教系统" textFill="WHITE">
+                  <Button fx:id="commentButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#tabChange" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="评教系统" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -61,7 +61,7 @@
                         <Insets left="30.0" />
                      </padding>
                   </Button>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="关于软件" textFill="WHITE">
+                  <Button fx:id="aboutButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#tabChange" prefHeight="54.0" prefWidth="220.0" stylesheets="@css/styling.css" text="关于软件" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -79,7 +79,7 @@
          <top>
             <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="1144.0" style="-fx-background-color: #52438F;" BorderPane.alignment="CENTER">
                <children>
-                  <Label graphicTextGap="10.0" text="FxxkJwts" textFill="WHITE">
+                  <Label graphicTextGap="10.0" prefHeight="30.0" prefWidth="135.0" text="FxxkJwts" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -91,7 +91,7 @@
                         <Font name="Lucida Sans Typewriter Regular" size="18.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="987.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="1079.0">
                      <children>
                         <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#closeProgram" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -110,7 +110,68 @@
             </HBox>
          </top>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="coursePane" prefHeight="599.0" prefWidth="1035.0" style="-fx-background-color: #fbfbfd;" />
+                  <Pane fx:id="commentPane" prefHeight="599.0" prefWidth="1035.0" style="-fx-background-color: #fbfbfd;" />
+                  <Pane fx:id="aboutPane" prefHeight="599.0" prefWidth="1035.0" style="-fx-background-color: #fbfbfd;" />
+                  <Pane fx:id="infoPane" prefHeight="599.0" prefWidth="1035.0" style="-fx-background-color: #fbfbfd;" />
+                  <Pane fx:id="fuckPane" prefHeight="599.0" prefWidth="1035.0" style="-fx-background-color: #fbfbfd;">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="86.0" prefWidth="1035.0">
+                           <children>
+                              <Label text="类型：">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <ChoiceBox fx:id="categoriesChoice" prefWidth="150.0" stylesheets="@css/styling.css">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ChoiceBox>
+                              <Label text="学年学期：">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ChoiceBox>
+                              <Label text="开课校区：">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ChoiceBox>
+                              <Label text="开课院系：">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ChoiceBox prefWidth="150.0" stylesheets="@css/styling.css">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ChoiceBox>
+                              <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="75.0" stylesheets="@css/simpleButton.css" text="查询">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Separator layoutX="66.0" layoutY="79.0" prefHeight="15.0" prefWidth="903.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
          </center>
       </BorderPane>
    </children>

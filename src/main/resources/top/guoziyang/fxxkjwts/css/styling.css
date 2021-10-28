@@ -68,8 +68,6 @@
 
 }
 
-
-
 .chart {
     -fx-padding: 10px;
     -fx-background-color: transparent;
@@ -82,4 +80,25 @@
 .chart-pie {
     -fx-border-color: derive(-fx-pie-color, 1%);
     -fx-border-width: 0px;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #fbfbfd;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #6F5CC2;
+}
+
+.choice-box {
+    -fx-border-color: #6F5CC2;
+}
+
+.choice-box {
+    -fx-background-color: #fbfbfd;
+    -fx-mark-color: #52438F
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
 }

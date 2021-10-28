@@ -17,6 +17,7 @@ import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.guoziyang.fxxkjwts.MainApplication;
+import top.guoziyang.fxxkjwts.common.CourseUtil;
 import top.guoziyang.fxxkjwts.common.OkHttpUtil;
 
 import java.io.IOException;
@@ -56,11 +57,12 @@ public class LoginController {
                 errorMsg.setText("网络错误，请重试");
             }
             String responseStr = response.body().string();
-            String pattern = "您好！([\\u4e00-\\u9fa5]{2,})同学";
+            String pattern = "您好！(.*?)同学";
             Pattern p = Pattern.compile(pattern);
             Matcher m = p.matcher(responseStr);
             if(m.find()) {
                 logger.info("Login as " + m.group(1));
+                CourseUtil.setCourseCategory(responseStr);
                 stage.hide();
                 try {
                     showMain(new Stage());
