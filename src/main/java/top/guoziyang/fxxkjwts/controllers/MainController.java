@@ -1,7 +1,5 @@
 package top.guoziyang.fxxkjwts.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,43 +24,25 @@ import java.util.regex.Pattern;
 public class MainController {
     private static Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    public static Map<String, String> xklb = new HashMap<>();
     public static Map<String, String> xnxq = new HashMap<>();
     public static Map<String, String> kkxq = new HashMap<>();
     public static Map<String, String> kkyx = new HashMap<>();
 
+    public static String courseToken = "";
+
     public static Stage stage;
 
     @FXML
-    private Pane infoPane;
+    private Pane infoPane, fuckPane, coursePane, aboutPane, commentPane;
     @FXML
-    private Pane fuckPane;
-    @FXML
-    private Pane coursePane;
-    @FXML
-    private Pane aboutPane;
-    @FXML
-    private Pane commentPane;
-
-    @FXML
-    private Button infoButton;
-    @FXML
-    private Button fuckButton;
-    @FXML
-    private Button courseButton;
-    @FXML
-    private Button commentButton;
-    @FXML
-    private Button aboutButton;
+    private Button infoButton, fuckButton, courseButton, commentButton, aboutButton;
 
     // fuckPanel
     @FXML
-    private ChoiceBox<String> categoriesChoice;
+    private ChoiceBox<String> xklbChoice, xnxqChoice, kkxqChoice, kkyxChoice;
     @FXML
-    private ChoiceBox<String> xnxqChoice;
-    @FXML
-    private ChoiceBox<String> kkxqChoice;
-    @FXML
-    private ChoiceBox<String> kkyxChoice;
+    private Button courseSearchButton;
 
     @FXML
     public void closeProgram() {
@@ -90,17 +70,18 @@ public class MainController {
     @FXML
     public void initialize() {
         List<String> categoryName = new ArrayList<>();
-        for(Map.Entry<String, String> entry : CourseUtil.courseCategoryMap.entrySet()) {
+        for(Map.Entry<String, String> entry : xklb.entrySet()) {
             categoryName.add(entry.getKey());
         }
-        categoriesChoice.setItems(FXCollections.observableArrayList(categoryName));
-        categoriesChoice.setValue("--请选择--");
-        categoriesChoice.setOnAction(event -> getCourseBaseInfo());
+        xklbChoice.setItems(FXCollections.observableArrayList(categoryName));
+        xklbChoice.setValue("--请选择--");
+        xklbChoice.setOnAction(event -> getCourseBaseInfo());
     }
 
     private void getCourseBaseInfo() {
-        String value = categoriesChoice.getValue();
-        String courseCode = CourseUtil.courseCategoryMap.get(value);
+        courseSearchButton.setDisable(true);
+        String value = xklbChoice.getValue();
+        String courseCode = xklb.get(value);
         Response response = OkHttpUtil.getWithCookie("http://jwts.hit.edu.cn/xsxk/queryXsxk?pageXklb=" + courseCode);
         if(response == null || response.code() != 200) {
             logger.error("network error");
@@ -118,8 +99,12 @@ public class MainController {
         List<String> xnxqList = new ArrayList<>();
         List<String> kkxqList = new ArrayList<>();
         List<String> kkyxList = new ArrayList<>();
-        // 获取学年学期
+
         xnxq.clear();
+        kkyx.clear();
+        kkxq.clear();
+
+        // 获取学年学期
         String pattern = "<option value=\"(.*?)\"[\\s]?>(.*?)</option>";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(content);
@@ -136,7 +121,6 @@ public class MainController {
         xnxqChoice.setValue(xnxqList.get(0));
 
         // 获取校区
-        kkxq.clear();
         while (m.find()) {
             if(m.group(2).contains("全部")) {
                 kkyx.put(m.group(2), m.group(1));
@@ -150,13 +134,44 @@ public class MainController {
         kkxqChoice.setValue(kkxqList.get(0));
 
         // 获取院系
-        kkyx.clear();
         while (m.find()) {
             kkyx.put(m.group(2), m.group(1));
             kkyxList.add(m.group(2));
         }
         kkyxChoice.setItems(FXCollections.observableArrayList(kkyxList));
         kkyxChoice.setValue(kkyxList.get(0));
+
+        // 获取token
+        pattern = "<input type=\"hidden\" id=\"token\" name=\"token\" value=\"(.*?)\" />";
+        p = Pattern.compile(pattern);
+        m = p.matcher(content);
+        if(m.find()) {
+            courseToken = m.group(1);
+            courseSearchButton.setDisable(false);
+        } else {
+            logger.error("failed to find token");
+        }
+    }
+
+    @FXML
+    private void searchCourse() {
+        Map<String, String> searchData = new HashMap<>();
+        searchData.put("token", courseToken);
+        searchData.put("pageXklb", xklb.get(xklbChoice.getValue()));
+        searchData.put("pageXnxq", xnxq.get(xnxqChoice.getValue()));
+        searchData.put("pageKkxiaoqu", kkxq.get(kkxqChoice.getValue()));
+        searchData.put("pageKkyx", kkyx.get(kkyxChoice.getValue()));
+        searchData.put("pageSize", "300");
+        Response response = OkHttpUtil.postWithCookie("http://jwts.hit.edu.cn/xsxk/queryXsxkList", searchData);
+        try {
+            if (response == null || response.code() != 200) {
+                logger.error("");
+            }
+            String responseStr = response.body().string();
+            System.out.println(responseStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

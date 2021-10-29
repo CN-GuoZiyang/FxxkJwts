@@ -125,7 +125,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </Label>
-                              <ChoiceBox fx:id="categoriesChoice" prefWidth="150.0" stylesheets="@css/styling.css">
+                              <ChoiceBox fx:id="xklbChoice" prefWidth="150.0" stylesheets="@css/styling.css">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -160,7 +160,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </ChoiceBox>
-                              <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="75.0" stylesheets="@css/simpleButton.css" text="查询">
+                              <Button fx:id="courseSearchButton" mnemonicParsing="false" onAction="#searchCourse" prefHeight="32.0" prefWidth="75.0" stylesheets="@css/simpleButton.css" text="查询">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin>
